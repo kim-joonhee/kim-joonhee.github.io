@@ -136,7 +136,7 @@
         transition:none
       }
       #photo-dialog::backdrop {
-        background:rgba(0,0,0,0.6);
+        background:rgba(0,0,0,0.7);
         animation:none;
         transition:none
       }
@@ -290,8 +290,10 @@
       const photoTrigger = document.querySelector('.photo-trigger');
       const photoDialog = document.getElementById('photo-dialog');
       let previousOverflow = '';
+      let openedWithKeyboard = false;
 
-      photoTrigger.addEventListener('click', () => {
+      photoTrigger.addEventListener('click', (event) => {
+        openedWithKeyboard = event.detail === 0;
         previousOverflow = document.body.style.overflow;
         photoDialog.showModal();
         document.body.style.overflow = 'hidden';
@@ -302,7 +304,11 @@
       // Native modal dialog handles Escape and keeps keyboard focus inside.
       photoDialog.addEventListener('close', () => {
         document.body.style.overflow = previousOverflow;
-        photoTrigger.focus({ preventScroll: true });
+        if (openedWithKeyboard) {
+          photoTrigger.focus({ preventScroll: true });
+        } else {
+          photoTrigger.blur();
+        }
       });
     </script>
   </body>
