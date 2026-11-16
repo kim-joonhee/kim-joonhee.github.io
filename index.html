@@ -27,7 +27,7 @@
         font-size:20px;
         max-width:1120px;
         margin:0 auto;
-        padding:10px 48px 0;
+        padding:calc(10px + 3pt) 48px 0;
         background:#fff
       }
       header a {
@@ -89,7 +89,7 @@
       }
       @media(max-width:600px) {
         header {
-          padding:10px 22px 0;
+          padding:calc(10px + 3pt) 22px 0;
           height:auto
         }
         main {
@@ -109,8 +109,7 @@
         cursor:pointer;
         font:inherit
       }
-      .photo-trigger:focus-visible,
-      .photo-close:focus-visible {
+      .photo-trigger:focus-visible {
         outline:2px solid #006580;
         outline-offset:3px
       }
@@ -126,7 +125,7 @@
         transition:none
       }
       #photo-dialog::backdrop {
-        background:rgba(0,0,0,0.5);
+        background:rgba(0,0,0,0.6);
         animation:none;
         transition:none
       }
@@ -137,22 +136,6 @@
         width:auto;
         height:auto;
         object-fit:contain;
-        animation:none;
-        transition:none
-      }
-      .photo-close {
-        position:absolute;
-        top:8px;
-        right:8px;
-        width:36px;
-        height:36px;
-        padding:0;
-        border:0;
-        border-radius:50%;
-        background:#fff;
-        color:#212121;
-        font:28px/36px Arial,sans-serif;
-        cursor:pointer;
         animation:none;
         transition:none
       }
@@ -289,14 +272,12 @@
         <p><a href="cv/CV_20261025.pdf" target="_blank" rel="noopener noreferrer">CV</a></p>
       </section>
     </main>
-    <dialog id="photo-dialog" aria-label="Enlarged photograph of Joonhee Kim">
+    <dialog id="photo-dialog" aria-label="Enlarged photograph of Joonhee Kim. Click anywhere or press Escape to close." autofocus>
       <img src="photo/photo.jpg" alt="Joonhee Kim">
-      <button class="photo-close" type="button" aria-label="Close photograph" autofocus>&times;</button>
     </dialog>
     <script>
       const photoTrigger = document.querySelector('.photo-trigger');
       const photoDialog = document.getElementById('photo-dialog');
-      const photoClose = photoDialog.querySelector('.photo-close');
       let previousOverflow = '';
 
       photoTrigger.addEventListener('click', () => {
@@ -305,17 +286,7 @@
         document.body.style.overflow = 'hidden';
       });
 
-      photoClose.addEventListener('click', () => photoDialog.close());
-
-      photoDialog.addEventListener('click', (event) => {
-        const bounds = photoDialog.getBoundingClientRect();
-        if (event.target === photoDialog && (
-          event.clientX < bounds.left || event.clientX > bounds.right ||
-          event.clientY < bounds.top || event.clientY > bounds.bottom
-        )) {
-          photoDialog.close();
-        }
-      });
+      photoDialog.addEventListener('click', () => photoDialog.close());
 
       // Native modal dialog handles Escape and keeps keyboard focus inside.
       photoDialog.addEventListener('close', () => {
